@@ -1,6 +1,5 @@
 package com.project.demo.controller;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.project.demo.Respone.RespResult;
@@ -65,6 +64,16 @@ public class UserInfoController {
     })
     @GetMapping("/selectAll")
     public RespResult<PageInfo<UserInfo>> getAllUserInfo(@RequestParam(defaultValue = "0")Integer page,
+                                                         @RequestParam(defaultValue = "0")Integer size){
+        PageHelper.startPage(page,size);
+        List<UserInfo> userInfos = userInfoService.selectAll();
+        PageInfo<UserInfo>pageInfo=new PageInfo<>(userInfos);
+        return RetResponse.makeOKRsp(pageInfo);
+    }
+
+
+    @GetMapping("/selectAlla")
+    public RespResult<PageInfo<UserInfo>> getAllaUserInfo(@RequestParam(defaultValue = "0")Integer page,
                                                          @RequestParam(defaultValue = "0")Integer size){
         PageHelper.startPage(page,size);
         List<UserInfo> userInfos = userInfoService.selectAll();

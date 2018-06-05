@@ -7,6 +7,7 @@ import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter4;
 import com.project.demo.Respone.RespCode;
 import com.project.demo.Respone.RespResult;
 import com.project.demo.exception.ServiceException;
+import com.project.demo.interceptor.Interceptor1;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
@@ -14,8 +15,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerExceptionResolver;
+import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.NoHandlerFoundException;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
@@ -31,6 +34,8 @@ import java.util.List;
 public class WebConfigurer extends WebMvcConfigurationSupport {
 
    private Logger logger= LoggerFactory.getLogger(WebConfigurer.class);
+
+    private static final String IZATION = "CHUCHEN";
    // 消息转换器处理
     @Override
     protected void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
@@ -137,6 +142,7 @@ public class WebConfigurer extends WebMvcConfigurationSupport {
         return result;
     }
 
+    //继承WebMvcConfigurationSupport之后，静态文件映射会出现问题，需要重新指定静态资源
     @Override
     protected void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("swagger-ui.html")
@@ -146,5 +152,26 @@ public class WebConfigurer extends WebMvcConfigurationSupport {
         registry.addResourceHandler("/favicon.ico")
                 .addResourceLocations("classpath:/META-INF/resources/favicon.ico");
                 super.addResourceHandlers(registry);
+    }
+
+
+    //  请求拦截器
+
+    @Override
+    protected void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new Interceptor1() {
+            @Override
+            public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+                String ization = request.getHeader("ization");
+                if (IZATION.equals(ization)) {
+                    return true;
+                }else {
+                    RespResult<Object> result = new RespResult<>();
+                    result.setCode(RespCode.UNAUTHORIZED).setMsg("签名认证失败");
+                    responseResult(response, result);
+                    return false;
+                }
+            }//这里添加的是拦截的路径  /**为全部拦截
+        }).addPathPatterns("/UserInfo/selectAlla");
     }
 }

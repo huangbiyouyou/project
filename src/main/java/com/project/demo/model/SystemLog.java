@@ -1,10 +1,11 @@
 package com.project.demo.model;
 
+import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
 
 @Table(name = "system_log")
-public class SystemLog {
+public class SystemLog implements Serializable{
 
     /**
      * 日志类型为正常
@@ -17,6 +18,7 @@ public class SystemLog {
      */
     @Transient
     public static final String LOGERROR = "1";
+    private static final long serialVersionUID = -3176990087752387378L;
     @Id
     private String id;
 
