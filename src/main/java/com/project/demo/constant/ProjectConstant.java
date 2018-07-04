@@ -26,4 +26,14 @@ public class ProjectConstant {
     //文件上传储存的地址
     public static final String SAVEFILEPATH = "/Users/huangbiyou/Documents/office";
 
+
+    public enum SignType {
+        MD5, HMACSHA256
+    }
+
+    public static final String FIELD_SIGN = "sign";
+    public static final String APIKEY = "";
+    public static final String APPID = "";
+    public static final String MCHID = "";
+
 }

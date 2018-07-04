@@ -15,14 +15,14 @@ public class Scheduld {
 
     每隔5分钟执行一次：0 0/5 * * * ?*/
 
-    @Scheduled(fixedDelay = 5000)
-    public void job1(){
-        System.out.println("定时任务1" + new Date());
-    }
-
-
-    @Scheduled(cron = "0 30 17 * * ?")
-    public void job2(){
-        System.out.println("定时任务2" + new Date());
-    }
+//    @Scheduled(fixedDelay = 5000)
+//    public void job1(){
+//        System.out.println("定时任务1" + new Date());
+//    }
+//
+//
+//    @Scheduled(cron = "0 30 17 * * ?")
+//    public void job2(){
+//        System.out.println("定时任务2" + new Date());
+//    }
 }

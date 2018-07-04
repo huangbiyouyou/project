@@ -27,6 +27,11 @@ spring:
     filters: stat,wall,slf4j
     # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
     sconnectionProperties=druid.stat.mergeSql=true;druid.stat.slowSqlMillis: 5000
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    timeout: 0
+    password:
 
     #分页配置
 logging:
@@ -40,6 +45,7 @@ pagehelper:
   page-size-zero: true
 mapper:
   mappers: com.project.demo.universal.Mapper
+
 
 
 
