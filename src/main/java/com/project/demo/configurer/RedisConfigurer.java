@@ -13,7 +13,7 @@ import redis.clients.jedis.JedisPoolConfig;
 @Configuration
 @EnableCaching
 public class RedisConfigurer  extends CachingConfigurerSupport{
-
+ 
     @Bean
     @ConfigurationProperties(prefix="spring.redis")
     public JedisPoolConfig getRedisConfig(){

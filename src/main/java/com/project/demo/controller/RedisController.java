@@ -3,6 +3,7 @@ package com.project.demo.controller;
 import com.alibaba.fastjson.JSON;
 import com.project.demo.Respone.RespResult;
 import com.project.demo.Respone.RetResponse;
+import com.project.demo.aop.AnnotationLog;
 import com.project.demo.model.UserInfo;
 import com.project.demo.service.RedisService;
 import net.sf.json.JSONObject;
@@ -22,13 +23,16 @@ public class RedisController extends BaseController{
     private RedisService redisService;
 
     @PostMapping("/setRedis")
+  //  @AnnotationLog(remark = "redis")
     public RespResult<UserInfo> setRedis(String name) {
         UserInfo info=new UserInfo();
         info.setAddress("adsl");
+        info.setId("100");
         info.setUser_name("ssss");
         String string = JSON.toJSONString(info);
         redisService.set("us",string);
         redisService.expire("us",10);
+        //redisService.del("us");
         return RetResponse.makeOKRsp(info);
     }
 
