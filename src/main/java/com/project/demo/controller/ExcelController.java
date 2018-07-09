@@ -42,8 +42,6 @@ public class ExcelController {
             UserInfo userInfo = list.get(i);
             List<Object> row = new ArrayList();
             row.add(userInfo.getId());
-            row.add(userInfo.getUser_name());
-            row.add(userInfo.getAddress());
             rows.add(row);
         }
         data.setRows(rows);
@@ -73,8 +71,6 @@ public class ExcelController {
             UserInfo userInfo = list.get(i);
             List<Object> row = new ArrayList();
             row.add(userInfo.getId());
-            row.add(userInfo.getUser_name());
-            row.add(userInfo.getAddress());
             rows.add(row);
         }
         data.setRows(rows);

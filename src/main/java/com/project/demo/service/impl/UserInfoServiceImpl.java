@@ -27,16 +27,7 @@ public class UserInfoServiceImpl extends AbsratctService<UserInfo>implements Use
         return userInfo;
     }
 
-   /* @Override
-    public UserInfo selectById(Integer id) {
-        UserInfo userInfo = userInfoMapper.selectById(id);
-
-        if(userInfo == null){
-            throw new ServiceException("暂无该用户");
-        }
-        return userInfo;
-    }
-
+/*
     @Override
     public PageInfo<UserInfo> selectAll(Integer page, Integer size) {
         //开启分页查询，写在查询语句上方

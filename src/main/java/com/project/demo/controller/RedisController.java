@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -25,10 +26,10 @@ public class RedisController extends BaseController{
     @PostMapping("/setRedis")
   //  @AnnotationLog(remark = "redis")
     public RespResult<UserInfo> setRedis(String name) {
+        List<UserInfo> userInfos=new ArrayList<>();
         UserInfo info=new UserInfo();
-        info.setAddress("adsl");
         info.setId("100");
-        info.setUser_name("ssss");
+        userInfos.add(info);
         String string = JSON.toJSONString(info);
         redisService.set("us",string);
         redisService.expire("us",10);

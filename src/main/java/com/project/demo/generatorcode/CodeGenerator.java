@@ -27,7 +27,7 @@ public class CodeGenerator {
      * @param args
      */
     public static void main(String[] args) {
-        genCode("system_log");
+        genCode("user_role");
     }
 
     private static void genCode(String... tableNames) {

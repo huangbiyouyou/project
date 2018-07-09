@@ -51,6 +51,9 @@ pagehelper:
   page-size-zero: true
 mapper:
   mappers: com.project.demo.universal.Mapper
+shiro:
+  loginUrl: /shiroUtils/noLogin
+  unauthorizedUrl: /shiroUtils/noAuthorize
 
 
 

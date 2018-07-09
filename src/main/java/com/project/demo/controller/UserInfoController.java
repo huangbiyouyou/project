@@ -5,15 +5,18 @@ import com.github.pagehelper.PageInfo;
 import com.project.demo.Respone.RespResult;
 import com.project.demo.Respone.RetResponse;
 import com.project.demo.aop.AnnotationLog;
+import com.project.demo.exception.ServiceException;
 import com.project.demo.model.UserInfo;
 import com.project.demo.service.UserInfoService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.apache.catalina.security.SecurityUtil;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -81,4 +84,20 @@ public class UserInfoController {
         return RetResponse.makeOKRsp(pageInfo);
     }
 
+
+
+    @PostMapping("/login")
+    public RespResult<UserInfo> login(String userName, String password) {
+        Subject currentUser = SecurityUtils.getSubject();
+
+        //登录
+        try {
+            currentUser.login(new UsernamePasswordToken(userName, password));
+        }catch (IncorrectCredentialsException i){
+            throw new ServiceException("密码输入错误");
+        }
+
+        UserInfo userInfo= (UserInfo) currentUser.getPrincipal();
+        return RetResponse.makeOKRsp(userInfo);
+    }
 }
