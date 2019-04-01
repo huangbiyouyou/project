@@ -8,6 +8,7 @@ import com.project.demo.Respone.RespCode;
 import com.project.demo.Respone.RespResult;
 import com.project.demo.exception.ServiceException;
 import com.project.demo.interceptor.Interceptor1;
+import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authz.UnauthenticatedException;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.slf4j.Logger;
@@ -49,7 +50,7 @@ public class WebConfigurer extends WebMvcConfigurationSupport {
 
         config.setSerializerFeatures(
 
-                //SerializerFeature.WriteNullListAsEmpty
+                SerializerFeature.WriteNullListAsEmpty,
                 // String null -> ""
                 SerializerFeature.WriteNullStringAsEmpty,
                 // Number null -> 0
@@ -96,15 +97,17 @@ public class WebConfigurer extends WebMvcConfigurationSupport {
             public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object o, Exception e) {
                 RespResult<Object> result = new RespResult<Object>();
                 // 业务失败的异常，如“账号或密码错误”
+                System.out.print(e);
                 if (e instanceof ServiceException) {
                     result.setCode(RespCode.FAIL).setMsg(e.getMessage()).setData(null);
-                   // LOGGER.info(e.getMessage());
                 } else if (e instanceof NoHandlerFoundException) {
                     result.setCode(RespCode.NOT_FOUND).setMsg("接口 [" + request.getRequestURI() + "] 不存在");
                 } else if (e instanceof UnauthorizedException) {
                     result.setCode(RespCode.UNAUTHEN).setMsg("用户没有访问权限").setData(null);
                 }else if (e instanceof UnauthenticatedException) {
                     result.setCode(RespCode.UNAUTHEN).setMsg("用户未登录").setData(null);
+                }else if (e instanceof UnknownAccountException){
+                    result.setCode(RespCode.UNKNOWUSER).setMsg("用户不存在").setData(null);
                 }else if (e instanceof ServletException) {
                     result.setCode(RespCode.FAIL).setMsg(e.getMessage());
                 } else {
@@ -117,7 +120,6 @@ public class WebConfigurer extends WebMvcConfigurationSupport {
                     } else {
                         message = e.getMessage();
                     }
-                   // LOGGER.error(message, e);
                 }
                 responseResult(response, result);
                 return new ModelAndView();
@@ -174,8 +176,16 @@ public class WebConfigurer extends WebMvcConfigurationSupport {
     protected void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("swagger-ui.html")
                 .addResourceLocations("classpath:/META-INF/resources/");
+
         registry.addResourceHandler("/webjars/**")
                 .addResourceLocations("classpath:/META-INF/resources/webjars/");
+
+//        registry.addResourceHandler("/")
+//                .addResourceLocations("classpath:/WEB-INF/views/");
+//
+//        registry.addResourceHandler("/static/**")
+//                .addResourceLocations("classpath:/static/");
+
         registry.addResourceHandler("/favicon.ico")
                 .addResourceLocations("classpath:/META-INF/resources/favicon.ico");
                 super.addResourceHandlers(registry);

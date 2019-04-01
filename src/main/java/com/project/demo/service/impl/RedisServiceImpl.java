@@ -7,16 +7,20 @@ import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.stereotype.Service;
+import redis.clients.jedis.Jedis;
 
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 @Service
 public class RedisServiceImpl implements RedisService{
 
     @Resource
     private RedisTemplate<String,?>redisTemplate;
+
 
     @Override
     public boolean set(String key, String value) {
@@ -120,4 +124,5 @@ public class RedisServiceImpl implements RedisService{
         });
         return result;
     }
+
 }

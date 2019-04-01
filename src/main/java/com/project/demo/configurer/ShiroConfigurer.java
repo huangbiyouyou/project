@@ -4,8 +4,11 @@ import com.project.demo.model.SysPermissionInit;
 import com.project.demo.service.SysPermissionInitService;
 import com.project.demo.shiro.CustomRealm;
 import org.apache.shiro.realm.Realm;
+import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.spring.web.config.DefaultShiroFilterChainDefinition;
 import org.apache.shiro.spring.web.config.ShiroFilterChainDefinition;
+import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -24,7 +27,25 @@ public class ShiroConfigurer {
         return new CustomRealm();
     }
 
+    @Bean
+    public DefaultWebSecurityManager securityManager() {
+        DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
+        securityManager.setRealm(realm());
+        //缓存管理
+       // securityManager.setCacheManager(jedisCacheManager());
+        //会话管理
+        securityManager.setSessionManager(sessionManager());
+        return securityManager;
+    }
 
+
+    @Bean
+    public SessionManager sessionManager() {
+        DefaultWebSessionManager defaultWebSessionManager = new DefaultWebSessionManager();
+        //可以设置shiro提供的会话管理机制
+        //defaultWebSessionManager.setSessionDAO(new EnterpriseCacheSessionDAO());
+        return defaultWebSessionManager;
+    }
 
 //    @Bean
 //    public static DefaultAdvisorAutoProxyCreator getDefaultAdvisorAutoProxyCreator() {
@@ -44,17 +65,21 @@ public class ShiroConfigurer {
 
         DefaultShiroFilterChainDefinition chain=new DefaultShiroFilterChainDefinition();
 
-//        chain.addPathDefinition( "/UserInfo/selectById", "authc, roles[admin]");
-//        chain.addPathDefinition( "/logout", "anon");
-//        chain.addPathDefinition( "/UserInfo/selectAll", "anon");
-//        chain.addPathDefinition( "/UserInfo/login", "anon");
-//        chain.addPathDefinition( "/**", "authc");
+       // chain.addPathDefinition( "/UserInfo/selectById", "authc, roles[admin]");
+        chain.addPathDefinition( "/logout", "anon");
+        chain.addPathDefinition( "/UserInfo/hello", "anon");
+        chain.addPathDefinition( "/UserInfo/selectAll", "anon");
+        chain.addPathDefinition( "/UserInfo/login", "anon");
+        chain.addPathDefinition( "/UserInfo/selectById", "anon");
+        chain.addPathDefinition( "/redis/setRedis", "anon");
+        chain.addPathDefinition( "/redis/getRedis", "anon");
+        chain.addPathDefinition( "/**", "authc");
 
-        List<SysPermissionInit> list = sysPermissionInitService.selectAllOrderBySort();
-        for(int i = 0,length = list.size();i<length;i++){
-            SysPermissionInit sysPermissionInit = list.get(i);
-            chain.addPathDefinition(sysPermissionInit.getUrl(), sysPermissionInit.getPermissionInit());
-        }
+//        List<SysPermissionInit> list = sysPermissionInitService.selectAllOrderBySort();
+//        for(int i = 0,length = list.size();i<length;i++){
+//            SysPermissionInit sysPermissionInit = list.get(i);
+//            chain.addPathDefinition(sysPermissionInit.getUrl(), sysPermissionInit.getPermissionInit());
+//        }
 
         return chain;
     }

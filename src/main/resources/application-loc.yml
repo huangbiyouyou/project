@@ -1,7 +1,11 @@
 spring:
+  activemq:
+    broker-url: tcp://localhost:61616
+    user:
+    password:
   datasource:
     driverClassName: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/project?useUnicode=true&characterEncoding=utf-8
+    url: jdbc:mysql://localhost/project?useUnicode=true&characterEncoding=utf-8
     username: root
     password: 1234
 
@@ -30,19 +34,17 @@ spring:
   redis:
     host: 127.0.0.1
     port: 6379
-    timeout: 0
     password:
     jedis:
       pool:
         max-active: 8
-        max-wait: -1
         max-idle: 8
         min-idle: 0
 
     #分页配置
 logging:
   level:
-    com.example.demo.dao: DEBUG
+    com.example.demo.dao: INFO
 pagehelper:
   helper-dialect: mysql
   reasonable: true
@@ -51,9 +53,10 @@ pagehelper:
   page-size-zero: true
 mapper:
   mappers: com.project.demo.universal.Mapper
-shiro:
-  loginUrl: /shiroUtils/noLogin
-  unauthorizedUrl: /shiroUtils/noAuthorize
+#shiro:
+#  loginUrl: /shiroUtils/noLogin
+#  unauthorizedUrl: /shiroUtils/noAuthorize
+
 
 
 

@@ -3,10 +3,12 @@ package com.project.demo.model;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Transient;
+import java.io.Serializable;
 import java.util.Set;
 
-public class UserInfo {
+public class UserInfo implements Serializable {
 
+    private static final long serialVersionUID = 2798230119416923760L;
     /**
      * 主键
      */

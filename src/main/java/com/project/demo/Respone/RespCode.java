@@ -18,6 +18,9 @@ public enum RespCode {
     /** 未登录 */
     UNAUTHEN(4401),
 
+    /** 未登录 */
+    UNKNOWUSER(300),
+
     /** 未授权，拒绝访问 */
     UNAUTHZ(4403);
 

@@ -15,10 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 @RestController
 @RequestMapping("redis")
 public class RedisController extends BaseController{
+
 
     @Resource
     private RedisService redisService;
@@ -26,10 +29,9 @@ public class RedisController extends BaseController{
     @PostMapping("/setRedis")
   //  @AnnotationLog(remark = "redis")
     public RespResult<UserInfo> setRedis(String name) {
-        List<UserInfo> userInfos=new ArrayList<>();
         UserInfo info=new UserInfo();
         info.setId("100");
-        userInfos.add(info);
+        info.setUserName(name);
         String string = JSON.toJSONString(info);
         redisService.set("us",string);
         redisService.expire("us",10);
